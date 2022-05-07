@@ -5,7 +5,7 @@ import CheckButton from "react-validation/build/button";
 
 import AuthService from "../services/auth.service";
 
-const required = value => {
+const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
@@ -26,19 +26,19 @@ export default class Login extends Component {
       username: "",
       password: "",
       loading: false,
-      message: ""
+      message: "",
     };
   }
 
   onChangeUsername(e) {
     this.setState({
-      username: e.target.value
+      username: e.target.value,
     });
   }
 
   onChangePassword(e) {
     this.setState({
-      password: e.target.value
+      password: e.target.value,
     });
   }
 
@@ -47,18 +47,22 @@ export default class Login extends Component {
 
     this.setState({
       message: "",
-      loading: true
+      loading: true,
     });
 
     this.form.validateAll();
 
-    if (this.checkBtn.context._errors.length === 0 && this.state.username != "admin" && this.state.password != "admin123" ) {
+    if (
+      this.checkBtn.context._errors.length === 0 &&
+      this.state.username != "admin" &&
+      this.state.password != "admin123"
+    ) {
       AuthService.login(this.state.username, this.state.password).then(
         () => {
           this.props.history.push("/user/home");
           window.location.reload();
         },
-        error => {
+        (error) => {
           const resMessage =
             (error.response &&
               error.response.data &&
@@ -68,20 +72,25 @@ export default class Login extends Component {
 
           this.setState({
             loading: false,
-            message: resMessage
+            message: resMessage,
           });
         }
       );
-    } 
+    }
 
-    console.log(this.state.username)
-    if (this.checkBtn.context._errors.length === 0 && this.state.username === "admin" && this.state.password === "admin123" ) {
+    console.log(this.state.username);
+    if (
+      this.checkBtn.context._errors.length === 0 &&
+      this.state.username === "admin" &&
+      this.state.password === "admin123"
+    ) {
       AuthService.adminLogin(this.state.username, this.state.password).then(
         () => {
           this.props.history.push("/admin/profile");
           window.location.reload();
         },
-        error => {
+        (error) => {
+          console.log(error.toString());
           const resMessage =
             (error.response &&
               error.response.data &&
@@ -91,16 +100,15 @@ export default class Login extends Component {
 
           this.setState({
             loading: false,
-            message: resMessage
+            message: resMessage,
           });
         }
       );
-    } 
-    else {
+    } else {
       this.setState({
-        loading: false
+        loading: false,
       });
-      console.log("ERROR")
+      console.log("ERROR");
     }
   }
 
@@ -116,7 +124,7 @@ export default class Login extends Component {
 
           <Form
             onSubmit={this.handleLogin}
-            ref={c => {
+            ref={(c) => {
               this.form = c;
             }}
           >
@@ -156,16 +164,18 @@ export default class Login extends Component {
               </button>
             </div>
 
-            {this.state.message && (
+            {this.state.message != "" ? (
               <div className="form-group">
                 <div className="alert alert-danger" role="alert">
                   {this.state.message}
                 </div>
               </div>
+            ) : (
+              <div></div>
             )}
             <CheckButton
               style={{ display: "none" }}
-              ref={c => {
+              ref={(c) => {
                 this.checkBtn = c;
               }}
             />
