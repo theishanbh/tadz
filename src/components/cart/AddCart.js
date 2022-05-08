@@ -11,16 +11,11 @@ function AddCart(props) {
   console.log(props);
   const addToCarthandler = () => {
     axios
-      .post(
-        `http://localhost:8080/api/cart`,
-        {
-          productId: props.product.prodID,
-          quantity: 1,
-        },
-        {
-          params: { id: currentUser.id },
-        }
-      )
+      .post(`http://localhost:8080/api/cart`, {
+        productId: props.product.prodID,
+        quantity: 1,
+        id: currentUser.id,
+      })
       .then((response) => {
         console.log(response);
         // if (response.data.success) {
